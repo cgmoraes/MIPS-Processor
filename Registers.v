@@ -13,7 +13,7 @@ module Registers
  assign Read_Data1 = registers[Read_reg1];
  assign Read_Data2 = registers[Read_reg2];
 
- always @(posedge clk)
+ always @ (negedge clk)
  begin
 	if (RegWrite) registers[Write_regs] <= Write_Data;
  end

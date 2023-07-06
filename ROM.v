@@ -1,5 +1,5 @@
 module ROM
-#(parameter DATA_WIDTH=32, parameter ADDR_WIDTH=5)
+#(parameter DATA_WIDTH=32, parameter ADDR_WIDTH=10)
 (
 	input clk, 
 	input [(ADDR_WIDTH-1):0] Read_addr,
@@ -10,10 +10,10 @@ module ROM
 
 	initial
 	begin
-		$readmemb("ROM.txt", rom);
+		$readmemb("ROM.bin", rom);
 	end
 	
-	always @ (posedge clk)
+	always @ (Read_addr)
 	begin
 		Instruction <= rom[Read_addr];
 	end	

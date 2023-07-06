@@ -1,27 +1,42 @@
 module Clock
-#(parameter N = 50000000)
 (
-	input clk, reset,
+	input clk, reset, Halt, freq10, freq100,
 	output reg clk_out
 );
 
-	reg [31:0] count;
-	
-	always @ (posedge clk or negedge reset)
+	initial
 	begin
-	 if (!reset) 
+		clk_out <= 1;
+	end
+	
+	integer count = 0;
+	integer N;
+	
+	always @ (negedge clk)
+	begin
+	 case({freq10, freq100})
+		2'b10: N <= 2500000;
+		2'b01: N <= 250000;
+		2'b11: N <= 0;
+	 default: N <= 25000000;
+	 endcase
+	 
+	 if (reset) 
 	 begin
-		count <= 32'b0;
+		count <= 0;
 		clk_out <= 0;
 	 end
-    else if (count == N - 1)
+	 else if(!Halt || !clk_out)
 	 begin
-		count <= 32'b0;
-		clk_out <= ~clk_out;
-	 end
-    else 
-	 begin
-		count <= count + 1;
+		 if (count < N)
+		 begin
+			count <= count + 1;
+		 end
+		 else 
+		 begin
+			count <= 0;
+			clk_out <= ~clk_out;
+		 end
 	 end
 	end
 	

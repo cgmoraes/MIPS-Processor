@@ -1,5 +1,5 @@
 module RAM
-#(parameter DATA_WIDTH=32, parameter ADDR_WIDTH=5)
+#(parameter DATA_WIDTH=32, parameter ADDR_WIDTH=10)
 (
 	input clk,
 	input [(ADDR_WIDTH-1):0] addr,
@@ -10,7 +10,7 @@ module RAM
 
 	reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
 
-	always @ (posedge clk)
+	always @ (negedge clk)
 	begin
 		if (MemWrite) ram[addr] <= Write_data;
 	end

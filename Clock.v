@@ -1,6 +1,7 @@
 module Clock
 (
-	input clk, reset, Halt, freq10, freq100,
+	input clk, reset, Halt, 
+	input [1:0] freq,
 	output reg clk_out
 );
 
@@ -14,7 +15,7 @@ module Clock
 	
 	always @ (negedge clk)
 	begin
-	 case({freq10, freq100})
+	 case(freq)
 		2'b10: N <= 2500000;
 		2'b01: N <= 250000;
 		2'b11: N <= 0;

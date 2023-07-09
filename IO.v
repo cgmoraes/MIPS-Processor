@@ -1,6 +1,7 @@
 module IO
 (	
-  input clk, reset, Input, Output, Halt, sw0, sw1, sw2, sw3, sw4, sw5, sw6, sw7, sw8, sw9, Enter,
+  input clk, reset, Input, Output, Halt, Enter,
+  input [9:0] sw, 
   input [31:0] output_num, 
   output [31:0] Input_Data,
   output reg [6:0] Hex0, Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7
@@ -118,7 +119,7 @@ module IO
 	end
   end
   
-  assign Input_Data = {22'b0,sw9,sw8,sw7,sw6,sw5,sw4,sw3,sw2,sw1,sw0};
+  assign Input_Data = {22'b0,sw};
   
   
 endmodule

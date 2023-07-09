@@ -1,0 +1,9 @@
+# Ignorar todos os arquivos, exceto .v, .bin e .pdf
+*
+!*.v
+!*.bin
+!*.pdf
+!*.vwf
+!*.qar
+!.gitignore
+!*.qpf

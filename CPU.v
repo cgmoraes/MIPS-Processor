@@ -51,7 +51,7 @@ module CPU
 							ALUSrc,
 							RegWrite,
 							ALUop);
-	Mux2_N2 #(5) Unit4(Instruction[20:16],
+	Mux3_N #(5) Unit4(Instruction[20:16],
 								Instruction[15:11],
 								r31,
 								r28,
@@ -86,7 +86,7 @@ module CPU
 				MemWrite,
 				MemRead,
 				RAM_Read_Data);
-	Mux2_N2 Unit10(ALU_result,
+	Mux3_N Unit10(ALU_result,
 						RAM_Read_Data,
 						Address_4,
 						Input_Data,

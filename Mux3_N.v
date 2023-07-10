@@ -1,4 +1,4 @@
-module Mux2_N2 
+module Mux3_N 
 #(parameter N=32)
 (
  input [N-1:0] A, B, C, D,

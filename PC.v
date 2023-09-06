@@ -5,17 +5,18 @@ module PC
 	input [2**ADDR_WIDTH-1:0] addr,
 	output reg [2**ADDR_WIDTH-1:0] out
 );
+	
+	reg prev_enter = 0;
 
-	integer count = 0;
 
 	always @ (posedge clk or posedge reset)
 	begin
-		if (reset) out <= 0;
-		else if(!Input && !Output) out <= addr;
-		else if (Enter && (count < 5)) count <= count + 1;
-		else if (Enter)
-		begin
-			count <= 0;
+		if (reset) begin
+		out <= 0;
+		prev_enter <= 0;
+		end else if(!Input && !Output) out <= addr;
+		else if (Enter != prev_enter) begin
+			prev_enter <= Enter;
 			out <= addr;
 		end
 	end

@@ -1,5 +1,5 @@
 module RAM
-#(parameter DATA_WIDTH=32, parameter ADDR_WIDTH=10)
+#(parameter DATA_WIDTH=32, parameter ADDR_WIDTH=6)
 (
 	input clk,
 	input [(ADDR_WIDTH-1):0] addr,

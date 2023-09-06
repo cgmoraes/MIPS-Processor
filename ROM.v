@@ -1,5 +1,5 @@
 module ROM
-#(parameter DATA_WIDTH=32, parameter ADDR_WIDTH=10)
+#(parameter DATA_WIDTH=32, parameter ADDR_WIDTH=8)
 (
 	input clk, 
 	input [(ADDR_WIDTH-1):0] Read_addr,

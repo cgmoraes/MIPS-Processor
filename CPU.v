@@ -37,7 +37,7 @@ module CPU
 	ROM Unit3(Clock,
 					Address_out[11:2],
 					Instruction);
-	Control Control(Instruction[31:26],
+	Control Unit4(Instruction[31:26],
 							RegDst,
 							MemtoReg,
 							Jump,
@@ -51,13 +51,13 @@ module CPU
 							ALUSrc,
 							RegWrite,
 							ALUop);
-	Mux3_N #(5) Unit4(Instruction[20:16],
+	Mux3_N #(5) Unit5(Instruction[20:16],
 								Instruction[15:11],
 								r31,
 								r28,
 								RegDst,
 								Write_register);
-	Registers Unit5(Clock,
+	Registers Unit6(Clock,
 							Instruction[25:21],
 							Instruction[20:16],
 							Write_register,
@@ -65,37 +65,37 @@ module CPU
 							Read_Data1,
 							Read_Data2,
 							RegWrite);
-	Sign_extend Unit6(Instruction[15:0],
+	Sign_extend Unit7(Instruction[15:0],
 									Sign);
-	Mux_N Unit7(Read_Data2,
+	Mux_N Unit8(Read_Data2,
 							Sign,
 							ALUSrc,
 							ALU_Mux);
 	ALU_control ALU_control(ALUop,
 									Instruction[5:0],
 									ALUCtrl);
-	ALU Unit8(ALUCtrl,
+	ALU Unit9(ALUCtrl,
 				Instruction[10:6],
 				Read_Data1,
 				ALU_Mux,
 				Zero,
 				ALU_result);
-	RAM Unit9(Clock,
+	RAM Unit10(Clock,
 				ALU_result[9:0],
 				Read_Data2,
 				MemWrite,
 				MemRead,
 				RAM_Read_Data);
-	Mux3_N Unit10(ALU_result,
+	Mux3_N Unit11(ALU_result,
 						RAM_Read_Data,
 						Address_4,
 						Input_Data,
 						MemtoReg,
 						Write_Data);
-	Shift_left_2 Unit11(Sign,
+	Shift_left_2 Unit12(Sign,
 								1'b0,
 								Sign_Left);
-	Add Unit12(Address_4,
+	Add Unit13(Address_4,
 					Sign_Left,
 					ALU_result_Add);
 	and(BEQ_out,
@@ -107,19 +107,19 @@ module CPU
 	or(BranchCtrl,
 		BEQ_out,
 		BNE_out);
-	Mux_N Unit13(Address_4,
+	Mux_N Unit14(Address_4,
 							ALU_result_Add,
 							BranchCtrl,
 							Branch_or_normal);
-	Shift_left_2 #(26,4) Unit14(Instruction[25:0],
+	Shift_left_2 #(26,4) Unit15(Instruction[25:0],
 											Address_4[31:28],
 											Instruction_Left);
-	Mux2_N Unit15(Branch_or_normal,
+	Mux2_N Unit16(Branch_or_normal,
 							Instruction_Left,
 							Read_Data1,
 							Jump,
 							Address_in);
-	IO Unit16(Clock, 
+	IO Unit17(Clock, 
 					reset,
 					Input,
 					Output,

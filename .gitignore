@@ -3,7 +3,6 @@
 !*.v
 !*.bin
 !*.pdf
-!*.vwf
 !*.qar
 !.gitignore
 !*.qpf

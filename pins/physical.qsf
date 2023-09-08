@@ -143,7 +143,7 @@ set_location_assignment PIN_AD26 -to sw[6]
 set_location_assignment PIN_AB26 -to sw[7]
 set_location_assignment PIN_AC25 -to sw[8]
 set_location_assignment PIN_AB25 -to sw[9]
-set_location_assignment PIN_AC24 -to Enter_in
+set_location_assignment PIN_AC24 -to Enter
 set_location_assignment PIN_AB24 -to freq[0]
 set_location_assignment PIN_AB23 -to freq[1]
 set_location_assignment PIN_Y23 -to reset

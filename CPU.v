@@ -3,19 +3,37 @@ module CPU
 	input CLK, reset, Enter,
 	input [9:0] sw, 
 	input [1:0] freq,
-	output [6:0] Hex0, Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7,
-	output [31:0] Address_out, ALU_result, Read_Data1,Read_Data2, Sign, Write_Data, Address_4,
-	output [31:0] Instruction,RAM_Read_Data,Instruction_Left, Input_Data,
-	output [1:0] Jump,RegDst, MemtoReg,
-	output Clock,Input,Output,Halt
+	output [6:0] Hex0, Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7
 );
-	wire RegWrite,MemWrite,MemRead,Zero,BranchCtrl,BEQ_out, BNE_out,Branch,Bne, ALUSrc;
-	wire [31:0] Branch_or_normal, Address_in;
-	wire [31:0] Sign_Left,ALU_Mux,ALU_result_Add;
-	wire [4:0] Write_register,r31, r28;
-	wire [3:0] ALUCtrl;
-	wire [2:0] ALUop;
 	
+	wire Clock,Input,Output,Halt, RegWrite, MemWrite, MemRead, Zero, BranchCtrl;
+	wire BEQ_out, BNE_out,Branch,Bne, ALUSrc;
+	wire [1:0] Jump,RegDst, MemtoReg;
+	wire [2:0] ALUop;
+	wire [3:0] ALUCtrl;
+	wire [4:0] Write_register, r31, r28;
+	wire [31:0] Address_out, ALU_result, Read_Data1, Read_Data2, Sign, Write_Data;
+	wire [31:0] Instruction,RAM_Read_Data,Instruction_Left, Address_4, Input_Data;
+	wire [31:0] Sign_Left,ALU_Mux,ALU_result_Add, Branch_or_normal, Address_in;
+	
+//module CPU
+//(
+//	input CLK, reset, Enter,
+//	input [9:0] sw, 
+//	input [1:0] freq,
+//	output [6:0] Hex0, Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7,
+//	output [31:0] Address_out, ALU_result, Read_Data1,Read_Data2, Sign, Write_Data, Address_4,
+//	output [31:0] Instruction,RAM_Read_Data,Instruction_Left, Input_Data,
+//	output [1:0] Jump,RegDst, MemtoReg,
+//	output Clock,Input,Output,Halt
+//);
+//	wire RegWrite,MemWrite,MemRead,Zero,BranchCtrl,BEQ_out, BNE_out,Branch,Bne, ALUSrc;
+//	wire [31:0] Branch_or_normal, Address_in;
+//	wire [31:0] Sign_Left,ALU_Mux,ALU_result_Add;
+//	wire [4:0] Write_register,r31, r28;
+//	wire [3:0] ALUCtrl;
+//	wire [2:0] ALUop;
+
 	assign r31 = 5'b11111;
 	assign r28 = 5'b11100;
 	

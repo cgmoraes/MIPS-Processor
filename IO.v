@@ -7,8 +7,6 @@ module IO
   output reg [6:0] Hex0, Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7
 );
 
-  reg state = 7'b1110111;
-
   task BCD;
 	input [3:0] value;
 	output [6:0] display;
@@ -94,17 +92,14 @@ module IO
 			BCD((Input_Data%100000000)/10000000, Hex7);
 		end
 	end else begin
-			Hex0 <= state;
-			Hex1 <= state;
-			Hex2 <= state;
-			Hex3 <= state;
-			Hex4 <= state;
-			Hex5 <= state;
-			Hex6 <= state;
-			Hex7 <= state;
-			
-			if (state == 7'b1110111) state <= 7'b1111110;
-			else state <= 7'b1110111;
+		Hex0 <= 7'b0111111;
+		Hex1 <= 7'b0111111;
+		Hex2 <= 7'b0111111;
+		Hex3 <= 7'b0111111;
+		Hex4 <= 7'b0111111;
+		Hex5 <= 7'b0111111;
+		Hex6 <= 7'b0111111;
+		Hex7 <= 7'b0111111;
 	end
   end
   

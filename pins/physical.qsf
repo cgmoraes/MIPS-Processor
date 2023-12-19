@@ -76,6 +76,19 @@ set_global_assignment -name PHYSICAL_SYNTHESIS_EFFORT FAST
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_location_assignment PIN_M5 -to LCD_DATA[7]
+set_location_assignment PIN_M3 -to LCD_DATA[6]
+set_location_assignment PIN_K2 -to LCD_DATA[5]
+set_location_assignment PIN_K1 -to LCD_DATA[4]
+set_location_assignment PIN_K7 -to LCD_DATA[3]
+set_location_assignment PIN_L2 -to LCD_DATA[2]
+set_location_assignment PIN_L1 -to LCD_DATA[1]
+set_location_assignment PIN_L3 -to LCD_DATA[0]
+set_location_assignment PIN_L4 -to LCD_EN
+set_location_assignment PIN_M1 -to LCD_RW
+set_location_assignment PIN_M2 -to LCD_RS
+set_location_assignment PIN_L5 -to LCD_ON
+set_location_assignment PIN_L6 -to LCD_BLON
 set_location_assignment PIN_G18 -to Hex0[0]
 set_location_assignment PIN_F22 -to Hex0[1]
 set_location_assignment PIN_E17 -to Hex0[2]

@@ -19,7 +19,7 @@ module Clock
 		2'b01: N <= 25000000;
 		2'b10: N <= 2500000;
 		2'b11: N <= 1;
-	 default: N <= 6250000;
+	 default: N <= 2500;
 	 endcase
 	 
 	 if (reset) 

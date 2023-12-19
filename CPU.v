@@ -1,40 +1,24 @@
-//module CPU
-//(
-//	input CLK, reset, Enter,
-//	input [9:0] sw, 
-//	input [1:0] freq,
-//	output [6:0] Hex0, Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7
-//);
-//	
-//	wire Clock,Input,Output,Halt, RegWrite, MemWrite, MemRead, Zero, BranchCtrl;
-//	wire BEQ_out, BNE_out,Branch,Bne, ALUSrc;
-//	wire [1:0] Jump,RegDst, MemtoReg;
-//	wire [2:0] ALUop;
-//	wire [3:0] ALUCtrl;
-//	wire [4:0] Write_register, r31, r28;
-//	wire [31:0] Address_out, ALU_result, Read_Data1, Read_Data2, Sign, Write_Data;
-//	wire [31:0] Instruction,RAM_Read_Data,Instruction_Left, Process_addr, Input_Data;
-//	wire [31:0] Sign_Left,ALU_Mux,ALU_result_Add, Branch_or_normal, Address_in;
-	
 module CPU
 (
 	input CLK, reset, Enter,
 	input [9:0] sw, 
 	input [1:0] freq,
 	output [6:0] Hex0, Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7,
-	output [31:0] Address_out, Read_Data1,Read_Data2,  Last_addr, Address_4,
-	output [31:0] Process_addr,  ALU_result_Add, Address_in, Base_addr, mem_addr, Data,
-	output [31:0] Instruction, Time_quantum,
-	output [4:0] Write_register,
-	output [1:0] Jump,RegDst, MemtoReg, Halt,
-	output Clock,ctx, getAddr, quantum, interruptionProcess 
+	inout [7:0] LCD_DATA,
+	output LCD_ON,	LCD_BLON, LCD_RW,	LCD_EN, LCD_RS
+	
 );
-	wire RegWrite,MemWrite,MemRead,Zero,BranchCtrl,BEQ_out, BNE_out,Branch,Bne, ALUSrc, setQuantum,Input,Output;
+	wire Clock,ctx, getAddr, quantum, interruptionProcess,RegWrite,MemWrite,MemRead,Zero;
+	wire BranchCtrl,BEQ_out, BNE_out,Branch,Bne,ALUSrc,setLCD,setQuantum,Input,Output;
 	wire [31:0] Branch_or_normal, ALU_result, Input_Data, RAM_Read_Data, Instruction_Left;
-	wire [31:0] ALU_Mux, Write_Data, Sign_Left, Sign;
-	wire [4:0] r31, r28;
+	wire [31:0] ALU_Mux, Write_Data, Sign_Left, Sign, Instruction, Time_quantum, mem_addr;
+	wire [31:0] Address_out,Read_Data1,Read_Data2,  Last_addr, Address_4,Data;
+	wire [31:0] ALU_result_Add, Address_in, Base_addr;
+	wire [4:0] r31, r28, Write_register;
 	wire [3:0] ALUCtrl;
 	wire [2:0] ALUop;
+	wire [1:0] Jump,RegDst, MemtoReg, Halt;
+
 	
 	Clock Unit0(CLK,
 					reset,
@@ -42,11 +26,11 @@ module CPU
 					Halt,
 					freq,
 					Clock);
-	Timer Unit18(Clock,
+	Timer Unit20(Clock,
 					 setQuantum,
 					 Read_Data1,
 					 Time_quantum);
-	InterruptionController Unit19(Clock,
+	InterruptionController Unit21(Clock,
 											reset,
 											quantum,
 											interruptionProcess,
@@ -75,7 +59,7 @@ module CPU
 					32'd4,
 					Address_4);
 	ROM Unit3(Clock,
-					Address_out[11:2],
+					Address_out[31:2],
 					Instruction);
 	Control Unit4(Instruction[31:26],
 							RegDst,
@@ -91,6 +75,7 @@ module CPU
 							ALUSrc,
 							RegWrite,
 							interruptionProcess,
+							setLCD,
 							setQuantum,
 							getAddr,
 							ALUop);
@@ -118,34 +103,35 @@ module CPU
 							Sign,
 							ALUSrc,
 							ALU_Mux);
-	ALU_control ALU_control(ALUop,
+	ALU_control Unit9(ALUop,
 									Instruction[5:0],
 									ALUCtrl);
-	ALU Unit9(ALUCtrl,
+	ALU Unit10(ALUCtrl,
 				Instruction[10:6],
 				Read_Data1,
 				ALU_Mux,
 				Zero,
 				ALU_result);
-	RAM Unit10(Clock,
-				ALU_result[9:0],
+	RAM Unit11(CLK,
+				Clock,
+				ALU_result,
 				Read_Data2,
 				MemWrite,
 				MemRead,
 				RAM_Read_Data);
-	Mux3_N Unit11(ALU_result,
+	Mux3_N Unit12(ALU_result,
 						RAM_Read_Data,
 						Address_4,
 						Input_Data,
 						MemtoReg,
 						Write_Data);
-	Mux_N Unit20(Write_Data,
+	Mux_N Unit13(Write_Data,
 					 Last_addr >> 2,
 					 getAddr,
 					 Data);
-	Shift_left_2 Unit12(Sign,
+	Shift_left_2 Unit14(Sign,
 								Sign_Left);
-	Add Unit13(Address_4,
+	Add Unit15(Address_4,
 					Sign_Left,
 					ALU_result_Add);
 	and(BEQ_out,
@@ -157,21 +143,21 @@ module CPU
 	or(BranchCtrl,
 		BEQ_out,
 		BNE_out);
-	Mux_N Unit14(Address_4,
+	Mux_N Unit16(Address_4,
 							ALU_result_Add,
 							BranchCtrl,
 							Branch_or_normal);
-	Shift_left_2_concat Unit15(Instruction[25:0],
+	Shift_left_2_concat Unit17(Instruction[25:0],
 											Address_4[31:28],
 											Base_addr,
 											Instruction_Left);
-	Mux3_N Unit16(Branch_or_normal,
+	Mux3_N Unit18(Branch_or_normal,
 							Instruction_Left,
 							Read_Data1,
 							Read_Data1 << 2,
 							Jump,
 							Address_in);
-	IO Unit17(Clock, 
+	IO Unit19(Clock, 
 					reset,
 					Input,
 					Output,
@@ -188,7 +174,14 @@ module CPU
 					Hex5, 
 					Hex6, 
 					Hex7);
-					
-//  test Unit33(Clock, ctx, quantum, Halt[1], {2'b00,Address_out[31:2]}+32'd1, {2'b00,Last_addr[31:2]}+32'd1, Hex0, Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7);
-	
+	LCD Unit22(CLK,
+				  Clock,
+				  setLCD,
+				  Read_Data1,
+				  LCD_DATA,
+				  LCD_ON,
+				  LCD_BLON,
+				  LCD_RW,
+				  LCD_EN,
+			     LCD_RS);
 endmodule

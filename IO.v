@@ -52,45 +52,23 @@ module IO
 		Hex6 <= 7'b1111111;
 		Hex7 <= 7'b1111111;
 	end else if(Output && !Input) begin
-		if (sw > 0) begin
-			Hex0 <= 7'b1001110;
-			Hex1 <= 7'b1000001;
-			Hex2 <= 7'b1000000;
-			Hex3 <= 7'b1111111;
-			Hex4 <= 7'b1111111;
-			Hex5 <= 7'b1111111;
-			Hex6 <= 7'b1111111;
-			Hex7 <= 7'b1111111;
-		end else begin
-			BCD(output_num%10, Hex0);
-			BCD((output_num%100)/10, Hex1);
-			BCD((output_num%1000)/100, Hex2);
-			BCD((output_num%10000)/1000, Hex3);
-			BCD((output_num%100000)/10000, Hex4);
-			BCD((output_num%1000000)/100000, Hex5);
-			BCD((output_num%10000000)/1000000, Hex6);
-			BCD((output_num%100000000)/10000000, Hex7);
-		end
+		BCD(output_num%10, Hex0);
+		BCD((output_num%100)/10, Hex1);
+		BCD((output_num%1000)/100, Hex2);
+		BCD((output_num%10000)/1000, Hex3);
+		BCD((output_num%100000)/10000, Hex4);
+		BCD((output_num%1000000)/100000, Hex5);
+		Hex6 <= 7'b1100011;
+		Hex7 <= 7'b1000000;
 	end else if(!Output && Input)begin
-		if (!Input_Data) begin			
-			Hex0 <= 7'b0101011;
-			Hex1 <= 7'b1111001;
-			Hex2 <= 7'b1111111;
-			Hex3 <= 7'b1111111;
-			Hex4 <= 7'b1111111;
-			Hex5 <= 7'b1111111;
-			Hex6 <= 7'b1111111;
-			Hex7 <= 7'b1111111;
-		end else begin
-			BCD(Input_Data%10, Hex0);
-			BCD((Input_Data%100)/10, Hex1);
-			BCD((Input_Data%1000)/100, Hex2);
-			BCD((Input_Data%10000)/1000, Hex3);
-			BCD((Input_Data%100000)/10000, Hex4);
-			BCD((Input_Data%1000000)/100000, Hex5);
-			BCD((Input_Data%10000000)/1000000, Hex6);
-			BCD((Input_Data%100000000)/10000000, Hex7);
-		end
+		BCD(Input_Data%10, Hex0);
+		BCD((Input_Data%100)/10, Hex1);
+		BCD((Input_Data%1000)/100, Hex2);
+		BCD((Input_Data%10000)/1000, Hex3);
+		BCD((Input_Data%100000)/10000, Hex4);
+		BCD((Input_Data%1000000)/100000, Hex5);
+		Hex6 <= 7'b0101011;
+		Hex7 <= 7'b1111001;
 	end else begin
 		Hex0 <= 7'b0111111;
 		Hex1 <= 7'b0111111;
@@ -99,7 +77,7 @@ module IO
 		Hex4 <= 7'b0111111;
 		Hex5 <= 7'b0111111;
 		Hex6 <= 7'b0111111;
-		Hex7 <= 7'b0111111;
+		Hex7 <= 7'b1111111;
 	end
   end
   

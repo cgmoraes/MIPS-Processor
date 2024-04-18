@@ -1,30 +1,33 @@
 module CPU
 (
 	input CLK, reset, Enter,
-	input [9:0] sw, 
-	input [1:0] freq,
-	output [6:0] Hex0, Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7,
-	inout [7:0] LCD_DATA,
-	output LCD_ON,	LCD_BLON, LCD_RW,	LCD_EN, LCD_RS
+	output vga_clk,
+	output Clock,
+	output [31:0] Address_in, Read_Data1,Read_Data2,
+	output  hsync, vsync, vga_sync, vga_blank,
+   output [7:0] red, green, blue
+	
+//	output [6:0] Hex0, Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7,
+//	inout [7:0] LCD_DATA,
+//	output LCD_ON,	LCD_BLON, LCD_RW,	LCD_EN, LCD_RS
 	
 );
-	wire Clock,ctx, getAddr, quantum, interruptionProcess,RegWrite,MemWrite,MemRead,Zero;
-	wire BranchCtrl,BEQ_out, BNE_out,Branch,Bne,ALUSrc,setLCD,setQuantum,Input,Output;
+	wire ctx, getAddr, quantum, interruptionProcess,RegWrite,MemWrite,MemRead,Zero;
+	wire BranchCtrl,Branch,BEQ_out, BNE_out,Bne,ALUSrc,setLCD,setQuantum,Input,Output;
 	wire [31:0] Branch_or_normal, ALU_result, Input_Data, RAM_Read_Data, Instruction_Left;
 	wire [31:0] ALU_Mux, Write_Data, Sign_Left, Sign, Instruction, Time_quantum, mem_addr;
-	wire [31:0] Address_out,Read_Data1,Read_Data2,  Last_addr, Address_4,Data;
-	wire [31:0] ALU_result_Add, Address_in, Base_addr;
+	wire [31:0] Address_out, Last_addr, Address_4,Data;
+	wire [31:0] ALU_result_Add, Base_addr;
 	wire [4:0] r31, r28, Write_register;
 	wire [3:0] ALUCtrl;
 	wire [2:0] ALUop;
-	wire [1:0] Jump,RegDst, MemtoReg, Halt;
+	wire [1:0] Jump,RegDst, MemtoReg, Halt, print;
 
 	
 	Clock Unit0(CLK,
 					reset,
 					ctx,
 					Halt,
-					freq,
 					Clock);
 	Timer Unit20(Clock,
 					 setQuantum,
@@ -66,6 +69,7 @@ module CPU
 							MemtoReg,
 							Jump,
 							Halt,
+							print,
 							Input,
 							Output,
 							Branch,
@@ -157,31 +161,47 @@ module CPU
 							Read_Data1 << 2,
 							Jump,
 							Address_in);
-	IO Unit19(Clock, 
-					reset,
-					Input,
-					Output,
-					Halt[1],
-					Enter,
-					sw,
-					Read_Data1,
-					Input_Data,
-					Hex0, 
-					Hex1, 
-					Hex2, 
-					Hex3, 
-					Hex4, 
-					Hex5, 
-					Hex6, 
-					Hex7);
-	LCD Unit22(CLK,
-				  Clock,
-				  setLCD,
-				  Read_Data1,
-				  LCD_DATA,
-				  LCD_ON,
-				  LCD_BLON,
-				  LCD_RW,
-				  LCD_EN,
-			     LCD_RS);
+//	IO Unit19(Clock, 
+//					reset,
+//					Input,
+//					Output,
+//					Halt[1],
+//					Enter,
+//					sw,
+//					Read_Data1,
+//					Input_Data,
+//					Hex0, 
+//					Hex1, 
+//					Hex2, 
+//					Hex3, 
+//					Hex4, 
+//					Hex5, 
+//					Hex6, 
+//					Hex7);
+//	LCD Unit22(CLK,
+//				  Clock,
+//				  setLCD,
+//				  Read_Data1,
+//				  LCD_DATA,
+//				  LCD_ON,
+//				  LCD_BLON,
+//				  LCD_RW,
+//				  LCD_EN,
+//			     LCD_RS);
+	vga_clock Unit24(CLK,
+					vga_clk);
+	Screen_controller Unit23(Clock,
+									vga_clk,
+									print,
+									Read_Data2,
+									Read_Data1,
+									Read_Data1,
+									hsync,
+									vsync, 
+									red,   
+									green,
+									blue,  
+									vga_sync,    
+									vga_blank);
+
 endmodule

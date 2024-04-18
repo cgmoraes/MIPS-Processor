@@ -1,7 +1,7 @@
 module Clock
 (
 	input clk, reset, ctx, 
-	input [1:0] Halt, freq,
+	input [1:0] Halt,
 	output reg clk_out
 );
 
@@ -11,17 +11,10 @@ module Clock
 	end
 	
 	integer count = 0;
-	integer N;
+	integer N = 2500;
 	
 	always @ (negedge clk)
 	begin
-	 case(freq)
-		2'b01: N <= 25000000;
-		2'b10: N <= 2500000;
-		2'b11: N <= 1;
-	 default: N <= 2500;
-	 endcase
-	 
 	 if (reset) 
 	 begin
 		count <= 0;

@@ -7,5 +7,6 @@
 !.gitignore
 !*.qpf
 !*.qsf
+!*.txt
 !pins/
 !pins/*
